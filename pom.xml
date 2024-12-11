@@ -23,7 +23,7 @@
         <flink.version>1.17.1</flink.version>
         <scala.version>2.12</scala.version>
         <hadoop.version>3.3.4</hadoop.version>
-        <flink-cdc.vesion>2.4.0</flink-cdc.vesion>
+        <flink-cdc.vesion>2.4.2</flink-cdc.vesion>
         <fastjson.version>1.2.83</fastjson.version>
         <hbase.version>2.4.11</hbase.version>
     </properties>
@@ -191,7 +191,7 @@
             <dependency>
                 <groupId>org.apache.doris</groupId>
                 <artifactId>flink-doris-connector-1.17</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.2</version>
             </dependency>
 
             <dependency>
@@ -268,5 +268,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
