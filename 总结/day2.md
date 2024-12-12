@@ -79,5 +79,65 @@ from (
     group by region
      ) as t2
 group by substr(region,1,2);
+
+hive调优：
+方法一：
+上面方法，首先把地区进行拼接一个随机数，目的是为了把数据打散，然后进行分组查个数，这时因为拼接了随机数，数量大概率不会重复，
+在套用一层子查询，把地区截取出来，再次进行一次聚合这时就会减少运行的时间
+方法二：
+增大map的个数方法
+set mapred.map.tasks=20;
+set mapred.min.split.size=100000000;
 ```
+#### 12.12 遇到的问题
+```
+CentOs7安装redis时报错
+因为redis6版本及以上需要gcc版本为9以上
+
+yum -y install centos-release-scl  安装scl工具
+如果你使用了 devtoolset（例如 devtoolset-9）来安装较新版本的 GCC，必须通过 scl enable 命令来启用它。
+
+确保你在终端中执行了以下命令：
+
+不可以直接安装，必须设置--nogpgcheck参数
+yum install --nogpgcheck devtoolset-9   免除GPS秘钥的问题
+使用 scl 启用 devtoolset：
+scl enable devtoolset-9 bash   启用devtoolset-9
+需要重新启动会话，版本gcc版本就会变为9及以上
+
+
+yum不能正常工作
+第一次尝试 换源
+1：备份之前的yum源配置
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+2：下载阿里云的Yum源配置使用
+curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+3：清除缓存
+yum clean all
+4：加载缓存
+yum makecache
+
+第二次尝试 修改其他配置
+修改CentOS-SCLo-scl-rh 文件，不存在不管
+vi /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+替换内容：这里不是全部替换，只替换【centos-sclo-rh】下面的内容。
+
+[centos-sclo-rh]
+name=CentOS-$releasever - SCLo rh
+baseurl=https://mirrors.aliyun.com/centos/$releasever/sclo/$basearch/rh/
+gpgcheck=1
+enabled=1
+gpgkey=https://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7
+修改CentOS-SCLo-scl 文件，不存在不管
+vi /etc/yum.repos.d/CentOS-SCLo-scl.repo
+替换内容：这里不是全部替换，只替换【centos-sclo-sclo】下面的内容。
+
+[centos-sclo-sclo]
+name=CentOS-$releasever - SCLo sclo
+baseurl=https://mirrors.aliyun.com/centos/$releasever/sclo/$basearch/sclo/
+gpgcheck=1
+enabled=1
+gpgkey=https://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7
+```
+
 
